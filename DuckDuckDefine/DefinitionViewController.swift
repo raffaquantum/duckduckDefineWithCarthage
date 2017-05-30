@@ -21,6 +21,7 @@
 */
 
 import UIKit
+import Alamofire
 
 class DefinitionViewController: UIViewController {
   
@@ -33,6 +34,16 @@ class DefinitionViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    if let imageURL = definition.imageURL {
+        Alamofire.request(imageURL).response { DataResponse in
+            self.activityIndicator.stopAnimating()
+            
+            let data = DataResponse.data
+            let image = UIImage(data: data!)
+            self.imageView.image = image
+        }
+    }
     
     title = definition.title
     descriptionLabel.text = definition.description
